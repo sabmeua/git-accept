@@ -1,0 +1,36 @@
+#!/bin/sh
+
+usage() {
+  cat <<USAGE
+usage: git accept <plan> [Filename]
+
+Available plans are:
+   theirs-then-ours  Accept both current and incoming changes in the order of "theirs", "ours".
+   ours-then-theirs  Accept both current and incoming changes in the order of "ours", "theirs".
+   theirs            Accept current changes. alias of "git checkout --ours".
+   ours              Accept incoming changes. alias of "git checkout --theirs".
+
+USAGE
+}
+
+if [ $# -lt 2 ]; then
+  usage
+  exit 1
+fi
+
+PLAN="$1"; shift
+FILE="$1"
+
+if [ -z "$(git grep -E '^<{7}')" ]; then
+  echo "No unresolved conflicts in this file."
+  echo
+  exit 1
+fi
+
+if [ "${PLAN}" = "theirs" ] || [ "${PLAN}" = "ours" ]; then
+  git checkout --${ST} ${FILE}
+elif [ "${PLAN}" = "theirs-then-ours" ]; then
+
+elif [ "${PLAN}" = "ours-then-theirs" ]; then
+  sed -i -E '/^[<>=]{7}.*$/d' ${FILE}
+fi
