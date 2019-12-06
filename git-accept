@@ -28,7 +28,7 @@ if [ -z "$(git grep -E '^<{7}')" ]; then
 fi
 
 if [ "${PLAN}" = "theirs" ] || [ "${PLAN}" = "ours" ]; then
-  git checkout --${ST} ${FILE}
+  git checkout --${PLAN} ${FILE}
 elif [ "${PLAN}" = "theirs-then-ours" ]; then
 
 elif [ "${PLAN}" = "ours-then-theirs" ]; then
