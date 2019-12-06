@@ -1,7 +1,6 @@
 version: 2.1
-orbs:
-  welcome: circleci/welcome-orb@0.4.1
-workflows:
-  welcome:
-    jobs:
-      - welcome/run
+steps:
+  - checkout
+  - run:
+    name: merge test
+    command: test/test.sh
