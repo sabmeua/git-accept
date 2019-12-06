@@ -30,18 +30,30 @@ fi
 if [ "${PLAN}" = "theirs" ] || [ "${PLAN}" = "ours" ]; then
   git checkout --${PLAN} ${FILE}
 elif [ "${PLAN}" = "theirs-then-ours" ]; then
-  CONFLICT_START=$(awk '/^<{7} .*$/{ print NR }' ${FILE} | head -n1)
-  PART_POINT=$(awk '/^={7}$/{ print NR }' ${FILE} | head -n1)
-  CONFLICT_END=$(awk '/^>{7} .*$/{ print NR }' ${FILE} | head -n1)
-  OURS_START=$(expr ${CONFLICT_START} + 1)
-  OURS_END=$(expr ${PART_POINT} - 1)
-  THEIRS_START=$(expr ${PART_POINT} + 1)
-  THEIRS_END=$(expr ${CONFLICT_END} - 1)
-  INSERT_POINT=${CONFLICT_START}
-  cat <<ERR
-Sorry, this function is under implementation.
-ERR
-  exit 1
+  cat ${FILE} | awk '
+    /^>{7}.*$/ && found1 && found2{
+      print val2 ORS val1
+      found1=found2=""
+      next
+    }
+    /^<{7}.*$/{
+      val1=val2=found2=""
+      found1=1
+      next
+    }
+    found1 && /^={7}.*$/{
+      found2=1
+      next
+    }
+    found1 && !found2{
+      val1=(val1?val1 ORS:"")$0
+      next
+    }
+    found2{
+      val2=(val2?val2 ORS:"")$0
+      next
+    }
+    1' | tee ${FILE} >/dev/null 2>&1
 elif [ "${PLAN}" = "ours-then-theirs" ]; then
   sed -i -E '/^[<>=]{7}.*$/d' ${FILE}
 fi
