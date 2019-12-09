@@ -1,6 +1,8 @@
-version: 2.1
-steps:
-  - checkout
-  - run:
-    name: merge test
-    command: test/test.sh
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/buildpack-deps
+    steps:
+      - checkout
+      - run: tests/test.sh
