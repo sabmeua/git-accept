@@ -2,13 +2,13 @@
 
 usage() {
   cat <<USAGE
-usage: git accept <plan> [Filename]
+usage: git accept <merge plan> <file>
 
 Available plans are:
-   theirs-then-ours  Accept both current and incoming changes in the order of "theirs", "ours".
-   ours-then-theirs  Accept both current and incoming changes in the order of "ours", "theirs".
-   theirs            Accept current changes. alias of "git checkout --ours".
-   ours              Accept incoming changes. alias of "git checkout --theirs".
+   2, ours                Accept incoming changes. alias of "git checkout --ours", "git checkout -2".
+   3, theirs              Accept current changes. alias of "git checkout --theirs", "git checkout -3".
+   23, ours-then-theirs   Accept both current and incoming changes in the order of "ours", "theirs".
+   32, theirs-then-ours   Accept both current and incoming changes in the order of "theirs", "ours".
 
 USAGE
 }
@@ -29,8 +29,10 @@ fi
 
 if [ "${PLAN}" = "theirs" ] || [ "${PLAN}" = "ours" ]; then
   git checkout --${PLAN} ${FILE}
-elif [ "${PLAN}" = "theirs-then-ours" ]; then
+elif [ "${PLAN}" = "3" ] || [ "${PLAN}" = "2" ]; then
+  git checkout -${PLAN} ${FILE}
+elif [ "${PLAN}" = "theirs-then-ours" ] || [ "${PLAN}" = "32" ]; then
   sed -i -nE '/^<{7}/{:a;n;/^={7}/bb;H;ba;:b;n;/^>{7}/bc;p;bb;:c;z;x;s/.//};p' ${FILE}
-elif [ "${PLAN}" = "ours-then-theirs" ]; then
+elif [ "${PLAN}" = "ours-then-theirs" ] || [ "${PLAN}" = "23" ]; then
   sed -i -E '/^[<>=]{7}.*$/d' ${FILE}
 fi
