@@ -27,6 +27,9 @@ merge_test() {
   git checkout -m ${FILE}
 }
 
+git config --global user.email "test@example.com"
+git config --global user.name "test"
+
 git checkout master -b conflict2
 cp tests/conflict2 ${FILE}
 git commit -a -m 'Add conflict 2'
