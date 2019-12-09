@@ -30,30 +30,7 @@ fi
 if [ "${PLAN}" = "theirs" ] || [ "${PLAN}" = "ours" ]; then
   git checkout --${PLAN} ${FILE}
 elif [ "${PLAN}" = "theirs-then-ours" ]; then
-  cat ${FILE} | awk '
-    /^>{7}.*$/ && found1 && found2{
-      print val2 ORS val1
-      found1=found2=""
-      next
-    }
-    /^<{7}.*$/{
-      val1=val2=found2=""
-      found1=1
-      next
-    }
-    found1 && /^={7}.*$/{
-      found2=1
-      next
-    }
-    found1 && !found2{
-      val1=(val1?val1 ORS:"")$0
-      next
-    }
-    found2{
-      val2=(val2?val2 ORS:"")$0
-      next
-    }
-    1' | tee ${FILE} >/dev/null 2>&1
+  sed -i -nE '/^<{7}/{:a;n;/^={7}/bb;H;ba;:b;n;/^>{7}/bc;p;bb;:c;z;x;s/.//};p' ${FILE}
 elif [ "${PLAN}" = "ours-then-theirs" ]; then
   sed -i -E '/^[<>=]{7}.*$/d' ${FILE}
 fi
