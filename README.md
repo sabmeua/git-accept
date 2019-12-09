@@ -39,7 +39,7 @@ index b414108,9f9a0f9..0000000
 It can merge like this with `git accept`.
 
 ```sh
-$ git accept theirs
+$ git accept theirs file
 $ cat file
 1
 2
@@ -48,7 +48,7 @@ $ cat file
 5
 6
 
-$ git accept ours
+$ git accept ours file
 $ cat file
 1
 2
@@ -57,7 +57,7 @@ $ cat file
 5
 6
 
-$ git accept theirs-then-ours
+$ git accept theirs-then-ours file
 $ cat file
 1
 2
@@ -68,7 +68,7 @@ $ cat file
 5
 6
 
-$ git accept ours-then-theirs
+$ git accept ours-then-theirs file
 $ cat file
 1
 2
