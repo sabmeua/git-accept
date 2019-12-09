@@ -9,6 +9,7 @@ Available plans are:
    3, theirs              Accept current changes. alias of "git checkout --theirs", "git checkout -3".
    23, ours-then-theirs   Accept both current and incoming changes in the order of "ours", "theirs".
    32, theirs-then-ours   Accept both current and incoming changes in the order of "theirs", "ours".
+   cancel                 Discard local changes and revert to conflict. alias of "git checkout -m".
 
 USAGE
 }
@@ -20,6 +21,11 @@ fi
 
 PLAN="$1"; shift
 FILE="$1"
+
+if [ "${PLAN}" = "cancel" ]; then
+  git checkout -m ${FILE}
+  exit 0
+fi
 
 if [ -z "$(git grep -E '^<{7}')" ]; then
   echo "No unresolved conflicts in this file."
