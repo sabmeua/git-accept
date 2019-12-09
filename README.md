@@ -88,11 +88,11 @@ git accept <merge plan> <file>
 
 ### Available merge plans
 
-* ours : Accept incoming changes. alias of "git checkout --ours", "git checkout -2".
-* theirs : Accept current changes. alias of "git checkout --theirs", "git checkout -3".
-* ours-then-theirs: Accept both current and incoming changes in the order of "ours", "theirs".
-* theirs-then-ours: Accept both current and incoming changes in the order of "theirs", "ours".
-* cancel: Discard local changes and revert to conflict. alias of "git checkout -m".
+* `ours`, `2` : Accept incoming changes. alias of `git checkout --ours`, `git checkout -2`.
+* `theirs`, `3` : Accept current changes. alias of `git checkout --theirs`, `git checkout -3`.
+* `ours-then-theirs`, `23` : Accept both current and incoming changes in the order of `ours`, `theirs`.
+* `theirs-then-ours`, `32` : Accept both current and incoming changes in the order of `theirs`, `ours`.
+* `cancel` : Discard local changes and revert to conflict. alias of `git checkout -m`.
 
 ## Instration
 
